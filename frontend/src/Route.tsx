@@ -1,55 +1,36 @@
-import { useContext } from 'react';
-import { Redirect, Route, RouteProps } from 'react-router';
+import { JSX, useContext } from 'react';
+import { Navigate } from 'react-router-dom';
 
 import { AuthenticationContext } from './context/AuthenticationContext';
 
-export { Route } from 'react-router';
-
-interface PrivateRouteProps extends RouteProps {
+interface PrivateRouteProps {
+  element: JSX.Element; // Cambié `component` a `element`
   roles?: string[];
 }
 
-export function PrivateRoute({
-  component: Component,
-  roles,
-  ...rest
-}: PrivateRouteProps) {
+export function PrivateRoute({ element, roles, ...rest }: PrivateRouteProps) {
   const { authenticatedUser } = useContext(AuthenticationContext);
 
-  return (
-    <Route
-      {...rest}
-      render={(props) => {
-        if (authenticatedUser) {
-          if (roles) {
-            if (roles.includes(authenticatedUser.role)) {
-              return <Component {...props} />;
-            } else {
-              return <Redirect to="/" />;
-            }
-          } else {
-            return <Component {...props} />;
-          }
-        }
-        return <Redirect to="/login" />;
-      }}
-    />
-  );
+  // Comprobamos si el usuario está autenticado
+  if (!authenticatedUser) {
+    return <Navigate to="/login" />; // Redirige si no está autenticado
+  }
+
+  // Si se especifican roles, comprobamos si el usuario tiene el rol correcto
+  if (roles && !roles.includes(authenticatedUser.role)) {
+    return <Navigate to="/" />; // Redirige si no tiene el rol adecuado
+  }
+
+  return element; // Si pasa las comprobaciones, renderiza el componente
 }
 
-export function AuthRoute({ component: Component, ...rest }) {
+export function AuthRoute({ element, ...rest }) {
   const { authenticatedUser } = useContext(AuthenticationContext);
 
-  return (
-    <Route
-      {...rest}
-      render={(props) => {
-        return authenticatedUser ? (
-          <Redirect to="/" />
-        ) : (
-          <Component {...props} />
-        );
-      }}
-    />
-  );
+  // Si el usuario está autenticado, lo redirigimos a la página principal
+  if (authenticatedUser) {
+    return <Navigate to="/" />;
+  }
+
+  return element;
 }

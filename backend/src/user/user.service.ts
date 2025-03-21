@@ -1,46 +1,53 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { ILike } from 'typeorm';
+import { FindOptionsWhere, ILike } from 'typeorm';
 
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
 import { UserQuery } from './user.query';
+import { Role } from 'src/enums/role.enum';
 
 @Injectable()
 export class UserService {
   async save(createUserDto: CreateUserDto): Promise<User> {
-    const user = await this.findByUsername(createUserDto.username);
+    const userByUsername = await this.findByUsername(createUserDto.username);
 
-    if (user) {
+    if (userByUsername) {
       throw new HttpException(
         `User with username ${createUserDto.username} is already exists`,
         HttpStatus.BAD_REQUEST,
       );
     }
 
-    const { password } = createUserDto;
-    createUserDto.password = await bcrypt.hash(password, 10);
-    return User.create(createUserDto).save();
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+
+    const user = User.create({ ...createUserDto, password: hashedPassword });
+
+    return await user.save();
   }
 
   async findAll(userQuery: UserQuery): Promise<User[]> {
+    const where: FindOptionsWhere<User> = {};
+
     Object.keys(userQuery).forEach((key) => {
-      if (key !== 'role') {
-        userQuery[key] = ILike(`%${userQuery[key]}%`);
-      }
+        if (key === 'role') {
+            where.role = userQuery.role as Role;
+        } else {
+            where[key] = ILike(`%${userQuery[key]}%`);
+        }
     });
 
     return User.find({
-      where: userQuery,
-      order: {
-        firstName: 'ASC',
-        lastName: 'ASC',
-      },
+        where,
+        order: {
+            firstName: 'ASC',
+            lastName: 'ASC',
+        },
     });
   }
 
   async findById(id: string): Promise<User> {
-    const user = await User.findOne(id);
+    const user = await User.findOne({where: {id}});
 
     if (!user) {
       throw new HttpException(
@@ -81,7 +88,8 @@ export class UserService {
   }
 
   async delete(id: string): Promise<string> {
-    await User.delete(await this.findById(id));
+    const userById = await this.findById(id);
+    await User.delete({id: userById.id});
     return id;
   }
 
@@ -92,7 +100,7 @@ export class UserService {
   /* Hash the refresh token and save it to the database */
   async setRefreshToken(id: string, refreshToken: string): Promise<void> {
     const user = await this.findById(id);
-    await User.update(user, {
+    await User.update(user.id, {
       refreshToken: refreshToken ? await bcrypt.hash(refreshToken, 10) : null,
     });
   }

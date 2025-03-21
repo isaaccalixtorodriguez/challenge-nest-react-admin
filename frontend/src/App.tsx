@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import useAuth from './hooks/useAuth';
 import Contents from './pages/Contents';
@@ -35,14 +35,22 @@ export default function App() {
 
   return isLoaded ? (
     <Router>
-      <Switch>
-        <PrivateRoute exact path="/" component={Dashboard} />
-        <PrivateRoute exact path="/users" component={Users} roles={['admin']} />
-        <PrivateRoute exact path="/courses" component={Courses} />
-        <PrivateRoute exact path="/courses/:id" component={Contents} />
-
-        <AuthRoute exact path="/login" component={Login} />
-      </Switch>
+      <Routes>
+        <Route path="/" element={<PrivateRoute element={<Dashboard />} />} />
+        <Route
+          path="/users"
+          element={<PrivateRoute element={<Users />} roles={['admin']} />}
+        />
+        <Route
+          path="/courses"
+          element={<PrivateRoute element={<Courses />} />}
+        />
+        <Route
+          path="/courses/:id"
+          element={<PrivateRoute element={<Contents />} />}
+        />
+        <Route path="/login" element={<AuthRoute element={<Login />} />} />
+      </Routes>
     </Router>
   ) : null;
 }
