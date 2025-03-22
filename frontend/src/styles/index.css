@@ -14,7 +14,8 @@
   body,
   #root {
     @apply h-full;
-    font-family: 'Roboto', 'Helvetica', 'Helvetica Neue', 'Nunito Sans', sans-serif;
+    font-family:
+      'Roboto', 'Helvetica', 'Helvetica Neue', 'Nunito Sans', sans-serif;
   }
   h1 {
     @apply text-2xl;

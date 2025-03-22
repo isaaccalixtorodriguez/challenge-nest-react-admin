@@ -7,6 +7,8 @@ import { ContentModule } from './content/content.module';
 import { CourseModule } from './course/course.module';
 import { StatsModule } from './stats/stats.module';
 import { UserModule } from './user/user.module';
+import { FavoriteModule } from './favorite/favorite.module';
+import { UserCourseModule } from './user-course/user-course.module';
 import * as ormconfig from '../ormconfig';
 
 @Module({
@@ -18,6 +20,8 @@ import * as ormconfig from '../ormconfig';
     CourseModule,
     ContentModule,
     StatsModule,
+    FavoriteModule,
+    UserCourseModule,
   ],
   controllers: [],
   providers: [],

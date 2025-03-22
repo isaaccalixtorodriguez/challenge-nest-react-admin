@@ -8,7 +8,13 @@ module.exports = {
         'primary-red-hover': '#a11e2a',
       },
       fontFamily: {
-        sans: ['Roboto', 'Helvetica', 'Helvetica Neue', 'Nunito Sans', 'sans-serif'],
+        sans: [
+          'Roboto',
+          'Helvetica',
+          'Helvetica Neue',
+          'Nunito Sans',
+          'sans-serif',
+        ],
       },
     },
   },

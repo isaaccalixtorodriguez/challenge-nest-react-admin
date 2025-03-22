@@ -7,6 +7,8 @@ import {
 } from 'typeorm';
 
 import { Content } from '../content/content.entity';
+import { Favorite } from '../favorite/entities/favorite.entity';
+import { UserCourse } from '../user-course/entities/user-course.entity';
 
 @Entity()
 export class Course extends BaseEntity {
@@ -19,9 +21,15 @@ export class Course extends BaseEntity {
   @Column()
   description: string;
 
-  @Column()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   dateCreated: Date;
 
   @OneToMany(() => Content, (content) => content.course)
   contents: Content[];
+
+  @OneToMany(() => Favorite, (favorite) => favorite.course)
+  favorites: Favorite[];
+
+  @OneToMany(() => UserCourse, (userCourse) => userCourse.course)
+  userCourses: UserCourse[];
 }

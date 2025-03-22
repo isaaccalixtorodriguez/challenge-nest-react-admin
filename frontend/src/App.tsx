@@ -5,6 +5,7 @@ import useAuth from './hooks/useAuth';
 import Contents from './pages/Contents';
 import Courses from './pages/Courses';
 import Dashboard from './pages/Dashboard';
+import { Favorites } from './pages/Favorites';
 import Login from './pages/Login';
 import Users from './pages/Users';
 import { AuthRoute, PrivateRoute } from './Route';
@@ -48,6 +49,10 @@ export default function App() {
         <Route
           path="/courses/:id"
           element={<PrivateRoute element={<Contents />} />}
+        />
+        <Route
+          path="/favorites"
+          element={<PrivateRoute element={<Favorites />} />}
         />
         <Route path="/login" element={<AuthRoute element={<Login />} />} />
       </Routes>

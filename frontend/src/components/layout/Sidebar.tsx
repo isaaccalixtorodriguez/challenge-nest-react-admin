@@ -1,4 +1,4 @@
-import { BookOpen, Home, LogOut, Users } from 'react-feather';
+import { BookOpen, Heart, Home, LogOut, Users } from 'react-feather';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 
@@ -45,6 +45,9 @@ export default function Sidebar({ className }: SidebarProps) {
         </SidebarItem>
         <SidebarItem to="/courses">
           <BookOpen /> Courses
+        </SidebarItem>
+        <SidebarItem to="/favorites">
+          <Heart /> Favorites
         </SidebarItem>
         {authenticatedUser.role === 'admin' ? (
           <SidebarItem to="/users">

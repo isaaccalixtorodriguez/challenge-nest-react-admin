@@ -7,6 +7,7 @@ import useAuth from '../../hooks/useAuth';
 import Course from '../../models/course/Course';
 import UpdateCourseRequest from '../../models/course/UpdateCourseRequest';
 import courseService from '../../services/CourseService';
+import { FavoriteButton } from '../FavoriteButton';
 import Modal from '../shared/Modal';
 import Table from '../shared/Table';
 import TableItem from '../shared/TableItem';
@@ -58,7 +59,7 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
   return (
     <>
       <div className="table-container">
-        <Table columns={['Name', 'Description', 'Created']}>
+        <Table columns={['Name', 'Description', 'Created', 'Actions']}>
           {isLoading
             ? null
             : data.map(({ id, name, description, dateCreated }) => (
@@ -71,32 +72,33 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
                     {new Date(dateCreated).toLocaleDateString()}
                   </TableItem>
                   <TableItem className="text-right">
-                    {['admin', 'editor'].includes(authenticatedUser.role) ? (
-                      <button
-                        className="text-indigo-600 hover:text-indigo-900 focus:outline-none"
-                        onClick={() => {
-                          setSelectedCourseId(id);
-
-                          setValue('name', name);
-                          setValue('description', description);
-
-                          setUpdateShow(true);
-                        }}
-                      >
-                        Edit
-                      </button>
-                    ) : null}
-                    {authenticatedUser.role === 'admin' ? (
-                      <button
-                        className="text-red-600 hover:text-red-900 ml-3 focus:outline-none"
-                        onClick={() => {
-                          setSelectedCourseId(id);
-                          setDeleteShow(true);
-                        }}
-                      >
-                        Delete
-                      </button>
-                    ) : null}
+                    <div className="flex items-center justify-end gap-2">
+                      <FavoriteButton courseId={id} />
+                      {['admin', 'editor'].includes(authenticatedUser.role) ? (
+                        <button
+                          className="text-indigo-600 hover:text-indigo-900 focus:outline-none"
+                          onClick={() => {
+                            setSelectedCourseId(id);
+                            setValue('name', name);
+                            setValue('description', description);
+                            setUpdateShow(true);
+                          }}
+                        >
+                          Edit
+                        </button>
+                      ) : null}
+                      {authenticatedUser.role === 'admin' ? (
+                        <button
+                          className="text-red-600 hover:text-red-900 focus:outline-none"
+                          onClick={() => {
+                            setSelectedCourseId(id);
+                            setDeleteShow(true);
+                          }}
+                        >
+                          Delete
+                        </button>
+                      ) : null}
+                    </div>
                   </TableItem>
                 </tr>
               ))}
