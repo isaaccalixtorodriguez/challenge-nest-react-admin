@@ -30,24 +30,24 @@ export class UserService {
     const where: FindOptionsWhere<User> = {};
 
     Object.keys(userQuery).forEach((key) => {
-        if (key === 'role') {
-            where.role = userQuery.role as Role;
-        } else {
-            where[key] = ILike(`%${userQuery[key]}%`);
-        }
+      if (key === 'role') {
+        where.role = userQuery.role as Role;
+      } else {
+        where[key] = ILike(`%${userQuery[key]}%`);
+      }
     });
 
     return User.find({
-        where,
-        order: {
-            firstName: 'ASC',
-            lastName: 'ASC',
-        },
+      where,
+      order: {
+        firstName: 'ASC',
+        lastName: 'ASC',
+      },
     });
   }
 
   async findById(id: string): Promise<User> {
-    const user = await User.findOne({where: {id}});
+    const user = await User.findOne({ where: { id } });
 
     if (!user) {
       throw new HttpException(
@@ -89,7 +89,7 @@ export class UserService {
 
   async delete(id: string): Promise<string> {
     const userById = await this.findById(id);
-    await User.delete({id: userById.id});
+    await User.delete({ id: userById.id });
     return id;
   }
 

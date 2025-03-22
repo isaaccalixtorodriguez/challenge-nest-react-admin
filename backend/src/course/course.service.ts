@@ -45,7 +45,7 @@ export class CourseService {
 
   async delete(id: string): Promise<string> {
     const course = await this.findById(id);
-    await Course.delete({id: course.id});
+    await Course.delete({ id: course.id });
     return id;
   }
 

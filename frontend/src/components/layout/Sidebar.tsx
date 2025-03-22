@@ -2,6 +2,8 @@ import { BookOpen, Home, LogOut, Users } from 'react-feather';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 
+import sideMenuBg from '../../assets/images/sidemenu-bg.jpg';
+import logo from '../../assets/images/urbano-logo-white.png';
 import useAuth from '../../hooks/useAuth';
 import authService from '../../services/AuthService';
 import SidebarItem from './SidebarItem';
@@ -22,9 +24,20 @@ export default function Sidebar({ className }: SidebarProps) {
   };
 
   return (
-    <div className={'sidebar ' + className}>
-      <Link to="/" className="no-underline text-black">
-        <h1 className="font-semibold text-center">Carna Project</h1>
+    <div
+      className="sidebar"
+      style={{
+        backgroundImage: `url(${sideMenuBg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      <Link to="/" className="no-underline text-black flex justify-center">
+        <img
+          src={logo}
+          alt="Carna Logo"
+          className="w-full max-w-[150px] h-auto"
+        />
       </Link>
       <nav className="mt-5 flex flex-col gap-3 flex-grow">
         <SidebarItem to="/">
@@ -40,7 +53,7 @@ export default function Sidebar({ className }: SidebarProps) {
         ) : null}
       </nav>
       <button
-        className="text-red-500 rounded-md p-3 transition-colors flex gap-3 justify-center items-center font-semibold focus:outline-none"
+        className="text-white rounded-md p-3 transition-colors flex gap-3 justify-center items-center font-semibold focus:outline-none"
         onClick={handleLogout}
       >
         <LogOut /> Logout

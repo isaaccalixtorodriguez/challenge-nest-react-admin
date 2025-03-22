@@ -42,6 +42,6 @@ async function bootstrap() {
 
   await createAdminOnFirstUse();
 
-  await app.listen(5000);
+  await app.listen(process.env.PORT || 5001);
 }
 bootstrap();

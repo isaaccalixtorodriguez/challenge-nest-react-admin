@@ -2,11 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Nunito+Sans:wght@400;600&display=swap');
+
+:root {
+  --primary-red: #c1292e;
+  --primary-red-hover: #a11e2a;
+}
+
 @layer base {
   html,
   body,
   #root {
     @apply h-full;
+    font-family: 'Roboto', 'Helvetica', 'Helvetica Neue', 'Nunito Sans', sans-serif;
   }
   h1 {
     @apply text-2xl;
@@ -24,8 +32,9 @@
 
 @layer components {
   .btn {
-    @apply p-3 bg-blue-500 rounded-md focus:outline-none text-white;
-    @apply hover:bg-blue-700 transition-all;
+    @apply p-3 rounded-md focus:outline-none text-white;
+    background-color: var(--primary-red);
+    @apply hover:bg-[var(--primary-red-hover)] transition-all;
     @apply focus:ring disabled:opacity-50;
   }
   .btn.danger {
