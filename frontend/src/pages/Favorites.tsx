@@ -49,7 +49,7 @@ export const Favorites: React.FC = () => {
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">Mis Cursos Favoritos</h1>
+        <h1 className="text-3xl font-bold mb-8">My Favorite Courses</h1>
 
         {favorites.length === 0 ? (
           <div className="text-center py-12">
